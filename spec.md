@@ -1,6 +1,6 @@
 # GOS (Reddit #2) by Nikunj 
 
-** Features with user stories**
+__Features with user stories__
 1. Home page - Latest posts, Explore, Trending, Popular subreddits
           a.) As a user I want sections to explore and access posts easily.
           b.) As a user I want anonymous browsing to avoid creating an account.
