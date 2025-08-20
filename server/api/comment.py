@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Body
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from typing import List
 from server import crud, schemas
@@ -19,7 +19,7 @@ def create_comment_for_post(post_id: int, comment: schemas.CommentCreate, db: Se
     return crud.create_comment(db=db, comment=comment, user_id=current_user.id, post_id=post_id)
 
 @router.put("/comments/{comment_id}", response_model=schemas.Comment)
-def update_comment(comment_id: int, content: str = Body(...), db: Session = Depends(get_db), current_user: schemas.User = Depends(get_current_user)):
+def update_comment(comment_id: int, content: str, db: Session = Depends(get_db), current_user: schemas.User = Depends(get_current_user)):
     db_comment = crud.get_comment(db, comment_id=comment_id)
     if db_comment is None:
         raise HTTPException(status_code=404, detail="Comment not found")
