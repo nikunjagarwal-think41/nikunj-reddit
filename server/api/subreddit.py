@@ -4,6 +4,7 @@ from typing import List
 from server import crud, schemas
 from server.dependencies import get_db, get_current_user
 from server.core.logging_config import logger
+from server.crud.post import get_posts_by_subreddit
 
 router = APIRouter()
 
@@ -36,3 +37,10 @@ def create_post_in_subreddit(name: str, post: schemas.PostCreate, db: Session = 
     if db_subreddit is None:
         raise HTTPException(status_code=404, detail="Subreddit not found")
     return crud.create_post(db=db, post=post, user_id=current_user.id, subreddit_id=db_subreddit.id)
+
+@router.get("/{name}/posts", response_model=List[schemas.Post])
+def read_posts_in_subreddit(name: str, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    db_subreddit = crud.get_subreddit_by_name(db, name=name)
+    if db_subreddit is None:
+        raise HTTPException(status_code=404, detail="Subreddit not found")
+    return get_posts_by_subreddit(db=db, subreddit_id=db_subreddit.id, skip=skip, limit=limit)

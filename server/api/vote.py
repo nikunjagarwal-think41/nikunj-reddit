@@ -20,6 +20,7 @@ def vote_on_post(post_id: int, vote: schemas.VoteCreate, db: Session = Depends(g
         else:
             crud.delete_vote(db, vote_id=existing_vote.id)
     
+    vote.post_id = post_id
     return crud.create_vote(db=db, vote=vote, user_id=current_user.id)
 
 @router.post("/comments/{comment_id}/vote")
@@ -36,4 +37,5 @@ def vote_on_comment(comment_id: int, vote: schemas.VoteCreate, db: Session = Dep
         else:
             crud.delete_vote(db, vote_id=existing_vote.id)
 
+    vote.comment_id = comment_id
     return crud.create_vote(db=db, vote=vote, user_id=current_user.id)
