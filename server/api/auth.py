@@ -16,17 +16,17 @@ def get_db():
 
 @router.post("/register", response_model=schemas.User)
 def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
-    db_user = crud.get_user_by_email(db, email=user.email)
+    db_user = crud.user.get_user_by_email(db, email=user.email)
     if db_user:
         raise HTTPException(status_code=400, detail="Email already registered")
-    db_user = crud.get_user_by_username(db, username=user.username)
+    db_user = crud.user.get_user_by_username(db, username=user.username)
     if db_user:
         raise HTTPException(status_code=400, detail="Username already registered")
-    return crud.create_user(db=db, user=user)
+    return crud.user.create_user(db=db, user=user)
 
 @router.post("/login")
 def login(user: schemas.LoginRequest, db: Session = Depends(get_db)):
-    db_user = crud.get_user_by_email(db, email=user.email)
+    db_user = crud.user.get_user_by_email(db, email=user.email)
     if not db_user or not verify_password(user.password, db_user.hashed_password):
         raise HTTPException(
             status_code=401,

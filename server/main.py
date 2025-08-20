@@ -1,10 +1,13 @@
 from fastapi import FastAPI
+from server.database import engine, Base
 import server.api.auth as auth_router
 import server.api.comment as comment_router
 import server.api.post as post_router
 import server.api.subreddit as subreddit_router
 import server.api.vote as vote_router
 import server.api.user as user_router
+
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 app.include_router(auth_router.router, prefix="/api/auth", tags=["auth"])
@@ -17,15 +20,6 @@ app.include_router(user_router.router, prefix="/api", tags=["users"])
 @app.get("/")
 def read_root():
     return {"Hello": "World"}
-
-
-
-
-
-
-
-
-
 
 
 
