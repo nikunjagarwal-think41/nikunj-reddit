@@ -7,6 +7,9 @@ class CommentBase(BaseModel):
 class CommentCreate(CommentBase):
     parent_comment_id: Optional[int] = None
 
+class CommentUpdate(BaseModel):
+    content: str
+
 class Comment(CommentBase):
     id: int
     user_id: int

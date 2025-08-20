@@ -32,7 +32,7 @@ def read_subreddit(name: str, db: Session = Depends(get_db)):
     return db_subreddit
 
 @router.post("/{name}/posts", response_model=schemas.Post)
-def create_post_in_subreddit(name: str, post: schemas.PostCreate, db: Session = Depends(get_db), current_user: schemas.User = Depends(get_current_user)):
+def create_post_in_subreddit(name: str, post: schemas.PostCreateInSubreddit, db: Session = Depends(get_db), current_user: schemas.User = Depends(get_current_user)):
     db_subreddit = crud.get_subreddit_by_name(db, name=name)
     if db_subreddit is None:
         raise HTTPException(status_code=404, detail="Subreddit not found")

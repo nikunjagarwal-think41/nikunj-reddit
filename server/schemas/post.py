@@ -8,6 +8,9 @@ class PostBase(BaseModel):
     link_url: Optional[str] = None
 
 class PostCreate(PostBase):
+    subreddit_name: str
+
+class PostCreateInSubreddit(PostBase):
     pass
 
 class PostUpdate(BaseModel):

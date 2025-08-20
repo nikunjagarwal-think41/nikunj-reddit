@@ -63,7 +63,7 @@ def test_update_comment(client: TestClient, auth_headers: dict):
     response = client.put(
         f"/api/comments/{comment_id}",
         headers=auth_headers,
-        json="This is an updated comment",
+        json={"content": "This is an updated comment"},
     )
     assert response.status_code == 200
     assert response.json()["content"] == "This is an updated comment"
@@ -122,7 +122,7 @@ def test_update_comment_not_author(client: TestClient, auth_headers: dict):
     response = client.put(
         f"/api/comments/{comment_id}",
         headers=auth_headers2,
-        json="This is an updated comment",
+        json={"content": "This is an updated comment"},
     )
     assert response.status_code == 403
 

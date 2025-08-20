@@ -6,6 +6,13 @@ from server.dependencies import get_db, get_current_user
 
 router = APIRouter()
 
+@router.post("", response_model=schemas.Post)
+def create_post(post: schemas.PostCreate, db: Session = Depends(get_db), current_user: schemas.User = Depends(get_current_user)):
+    db_subreddit = crud.get_subreddit_by_name(db, name=post.subreddit_name)
+    if db_subreddit is None:
+        raise HTTPException(status_code=404, detail="Subreddit not found")
+    return crud.create_post(db=db, post=post, user_id=current_user.id, subreddit_id=db_subreddit.id)
+
 @router.get("", response_model=List[schemas.Post])
 def read_posts(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     posts = crud.get_posts(db, skip=skip, limit=limit)

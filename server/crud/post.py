@@ -12,7 +12,8 @@ def get_post(db: Session, post_id: int):
     return db.query(Post).filter(Post.id == post_id).first()
 
 def create_post(db: Session, post: PostCreate, user_id: int, subreddit_id: int):
-    db_post = Post(**post.model_dump(), user_id=user_id, subreddit_id=subreddit_id)
+    post_data = post.model_dump(exclude={"subreddit_name"})
+    db_post = Post(**post_data, user_id=user_id, subreddit_id=subreddit_id)
     db.add(db_post)
     db.commit()
     db.refresh(db_post)
