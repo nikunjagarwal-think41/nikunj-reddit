@@ -11,5 +11,5 @@ class User(Base):
     avatar_url = Column(String, nullable=True)
     karma = Column(Integer, default=0)
     is_verified = Column(Boolean, default=False)
-    created_at = Column(DateTime, server_default=func.now())
-    updated_at = Column(DateTime, onupdate=func.now())
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
